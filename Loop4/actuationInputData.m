@@ -2,7 +2,8 @@
 clear all
 % Input data --------------------------------------------------------------
 sizingCriteria = 4/5; % Max hinge respect stall hinge
-Hm0 = 70e3;
+loadFlowMargin = 1.1; % QNL = loadFlowMargin*QNL
+Hm0 = 0*70e3;
 %Hm0 = 1.2724*(70e3/sizingCriteria); % Equivalent hinge moment for stiffness req [N*m]
 Hm1 = 70e3; % Maximum hinge moment [N*m]
 Hm2 = 24.5e3; % Hinge moment at maximum surface rate [N*m]
@@ -25,4 +26,4 @@ save('actuationInputDataList.mat',...
     'rateLimit_deg','deltaRange_deg',...
     'PS_psi','inertia_kgm2','Bulk_psi',...
     'volumeRatio','internalLeak_lpm','sizingCriteria','stiffnessReq',...
-    'ram2body_pin2pin_stiffness_ratio');
+    'ram2body_pin2pin_stiffness_ratio','loadFlowMargin');

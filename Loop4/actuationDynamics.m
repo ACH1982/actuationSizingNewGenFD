@@ -22,13 +22,15 @@ totalVol = deltaRange_deg*deg2rad * arm * area * volumeRatio;
 eqMass = inertia_kgm2 / (arm^2);
 Bulk_Pa = Bulk_psi*psi2Pa;
 stiffness = (4*Bulk_Pa*(area)^2) / totalVol;
+stiffness_Nmm = stiffness*1e-3;
 % -------------------------------------------------------------------------
 % Estimated parameters - second level--------------------------------------
 natOmega = sqrt(stiffness / eqMass);
 natFreq = natOmega / (2*pi);
 dampRatioRaw = (totalFlowPressCoeff_m3sPa/area)*sqrt(eqMass*Bulk_Pa/totalVol);
+dampRatioRaw = 0;
 dampRatio_1 = dampRatioRaw + 0.4;
-dampRatio_2 = dampRatioRaw + 0.1;
+dampRatio_2 = dampRatioRaw + sqrt(2)/2;
 % the totalFlowPressCoeff should be redefined if the dampRatio is
 % established in a specific value: dampRatio based on totalFlowPressCoeff +
 % 0.2 --> totalFlowPressCoeff should be computed from this dampRatio
@@ -102,24 +104,29 @@ for i=1:length(freqLoadPos_2)
     else
     end
 end
-minImpedance_1 = magLoadPos_1(iResonance_1); % N/m
-minImpedance_2 = magLoadPos_2(iResonance_2); % N/m
-minImpedance = min(minImpedance_1,minImpedance_2);
-areaRatio = stiffnessReq / minImpedance;
+% minImpedance_1 = magLoadPos_1(iResonance_1); % N/m
+% minImpedance_2 = magLoadPos_2(iResonance_2); % N/m
+% minImpedance = min(minImpedance_1,minImpedance_2);
+% areaRatio = stiffnessReq / minImpedance;
 % -------------------------------------------------------------------------
 % Plot results ------------------------------------------------------------
 % -------------------------------------------------------------------------
+stiffnessLine_Nmm = stiffness_Nmm.*ones(length(omegaPosLoad_1));
+verticalLine = 0:1e4:6e5;
+natFreqLine = natFreq*ones(length(verticalLine));
 semilogx(omegaPosLoad_1/2/pi,magLoadPos_1*1e-3,'r--',...
     omegaPosLoad_2/2/pi,magLoadPos_2*1e-3,'b--',...
-    natFreq*sqrt(1-2*dampRatio_1^2),minImpedance_1*1e-3,'rd',...
-    natFreq*sqrt(1-2*dampRatio_2^2),minImpedance_2*1e-3,'bo','MarkerSize',10);
+    omegaPosLoad_2/2/pi,stiffnessLine_Nmm,'k--',...
+    natFreqLine,verticalLine,'k--','MarkerSize',10);
+%     natFreq*sqrt(1-2*dampRatio_1^2),minImpedance_1*1e-3,'rd',...
+%     natFreq*sqrt(1-2*dampRatio_2^2),minImpedance_2*1e-3,'bo',...
+
 grid on
 ax = gca;
 ax.FontSize = 14;
 xlabel('Frequency (Hz)','Fontsize',16)
 ylabel('Stiffness (N/mm)','Fontsize',16)
-legend({'Damping = 0.4',...
-    'Damping = 0.1'},...
+legend({'Damping = 0.4','Damping = 0.1','Stiffness = 1.98 e5','Natural frequency = 20.45'},...
     'Fontsize',14,'Location','northeast')
 min(magLoadPos_2*1e-3)
 
