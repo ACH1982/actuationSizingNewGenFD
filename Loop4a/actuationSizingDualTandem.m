@@ -20,7 +20,7 @@ A_armArea_hingeReq = (Hm1/PS_Pa) / A_sizingCriteria; % m^3, hinge moment req
 A_armArea_stiffReq = (Hm0/PS_Pa); % m^3, stiffness req
 A_armArea = max(A_armArea_stiffReq,A_armArea_hingeReq);
 A_area = A_armArea / arm; % m^2
-A_totalVol = volumeRatio * A_armArea * deltaRange_deg * deg2rad;
+A_totalVol = volumeRatio * A_armArea * deltaRange_deg * deg2rad; %m^3
 % Configuration B (low speed configuration)
 B_armArea = (Hm2/PS_Pa) / B_sizingCriteria; % m^3, hinge moment req
 B_area = B_armArea / arm; % m^2
@@ -35,11 +35,11 @@ stroke_m = deltaRange_deg * deg2rad * arm; % m
 % Configuration A (high airspeed configuration)
 A_QNL_m3s = loadFlowMargin * A_armArea * ...
     dotdelta1_rad / sqrt(1 - A_sizingCriteria);
-    A_QNL_lpm = A_QNL_m3s * m3s2lpm;
+    A_QNL_lpm = A_QNL_m3s * m3s2lpm
 % Configuration B (low speed configuration)
 B_QNL_m3s = loadFlowMargin * B_armArea * ...
     dotdelta2_rad / sqrt(1 - B_sizingCriteria);
-    B_QNL_lpm = B_QNL_m3s * m3s2lpm;
+    B_QNL_lpm = B_QNL_m3s * m3s2lpm
 %--------------------------------------------------------------------------
 % Pressure-flow curves
 %--------------------------------------------------------------------------

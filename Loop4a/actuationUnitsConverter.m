@@ -1,5 +1,4 @@
 % Units conversion for actuation sizing and dynamics
-clear all
 % Conversion parameters----------------------------------------------------
 psi2Pa = 6894.757;
 Pa2psi = 1/6894.757;
