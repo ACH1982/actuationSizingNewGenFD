@@ -10,6 +10,7 @@ load('actuationSizingDataDualTandem.mat');
 load('valveSizingDataDualTandem.mat')
 % -------------------------------------------------------------------------
 % Estimated parameters - first level --------------------------------------
+% A_totalFlowPressCoeff_m3sPa = A_Kc0_m3s_Pa;
 A_totalFlowPressCoeff_m3sPa = A_Kc0_m3s_Pa + ...
     (internalLeak_lpm * lpm2m3s) / (PS_psi * psi2Pa);
 B_totalFlowPressCoeff_m3sPa = B_Kc0_m3s_Pa + ...
@@ -24,8 +25,8 @@ A_natOmega = sqrt(A_stiffness / eqMass);
 B_natOmega = sqrt(B_stiffness / eqMass);
 A_natFreq_ConfA = A_natOmega / (2*pi);
 B_natFreq_ConfB = B_natOmega / (2*pi);
-A_dampRatio = 0.1+(A_totalFlowPressCoeff_m3sPa/A_area)*sqrt(eqMass*Bulk_Pa/A_totalVol);
-B_dampRatio = 0.1+(B_totalFlowPressCoeff_m3sPa/B_area)*sqrt(eqMass*Bulk_Pa/B_totalVol);
+A_dampRatio = (A_totalFlowPressCoeff_m3sPa/A_area)*sqrt(eqMass*Bulk_Pa/A_totalVol);
+B_dampRatio = (B_totalFlowPressCoeff_m3sPa/B_area)*sqrt(eqMass*Bulk_Pa/B_totalVol);
 % -------------------------------------------------------------------------
 % Transfer functions estimation -------------------------------------------
 % % Position - Valve position dynamics-------------------------------------
@@ -51,8 +52,8 @@ B_posLoad_TF = tf(B_numPosLoad,B_denPosLoad);
 % % Plot-------------------------------------------------------------------
 % -------------------------------------------------------------------------
 freq_init = 5; % Hz
-freq_end = 30; % Hz
-freq_step = 0.05; % Hz
+freq_end = 25; % Hz
+freq_step = 0.01; % Hz
 w_init = freq_init*2*pi; % rad/s
 w_end = freq_end*2*pi; % rad/s
 w_step = freq_step*2*pi;
@@ -80,13 +81,21 @@ end
 % 
 % % stiffnessPoint_A = [natFreq,(stiffness*1e-3)/sqrt(2)];
 % % stiffnessPoint_B = [natFreq,(stiffness*1e-3)];
-
-semilogx(A_omegaPosLoad/2/pi,A_magLoadPos*1e-3);
+reqFreq = 17.1;
+reqImpedance = 50;
+p1 = semilogx(A_omegaPosLoad/2/pi,A_magLoadPos*1e-6,...
+    reqFreq,reqImpedance,'g<','MarkerSize',26);
 % semilogx(A_omegaPosLoad/2/pi,A_magLoadPos*1e-3,'b--',...
 %     B_omegaPosLoad/2/pi,B_magLoadPos*1e-3,'r--');
 grid on
+ax1 = gca; 
+ax1.FontSize = 22;
+p1(1).LineWidth = 4;
+p1(2).LineWidth = 4;
 xlabel('Frequency (Hz)')
-ylabel('Stiffness (N/mm)')
-text(6,4e6,num2str(A_stiffness*1e-6))
+ylabel('Stiffness (MN/m)')
+legend('Dynamic stiffness','Stiffness REQ',...
+    'Location','northeast','FontSize', 20);
+% text(6,4e3,num2str(A_stiffness*1e-6))
 %text(6,3e6,num2str(B_stiffness*1e-6))
 %legend('High speed configuration','Low speed configuration')

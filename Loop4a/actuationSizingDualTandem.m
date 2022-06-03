@@ -35,11 +35,11 @@ stroke_m = deltaRange_deg * deg2rad * arm; % m
 % Configuration A (high airspeed configuration)
 A_QNL_m3s = loadFlowMargin * A_armArea * ...
     dotdelta1_rad / sqrt(1 - A_sizingCriteria);
-    A_QNL_lpm = A_QNL_m3s * m3s2lpm
+    A_QNL_lpm = A_QNL_m3s * m3s2lpm;
 % Configuration B (low speed configuration)
 B_QNL_m3s = loadFlowMargin * B_armArea * ...
     dotdelta2_rad / sqrt(1 - B_sizingCriteria);
-    B_QNL_lpm = B_QNL_m3s * m3s2lpm
+    B_QNL_lpm = B_QNL_m3s * m3s2lpm;
 %--------------------------------------------------------------------------
 % Pressure-flow curves
 %--------------------------------------------------------------------------
@@ -198,17 +198,19 @@ save('actuationSizingDataDualTandem.mat',...
 % %     rateSizingPoint_FlowPressure = [Hm2/armArea*Pa2psi,dotdelta2_rad*armArea*m3s2lpm*loadFlowMargin];
 % %     rateSizingPoint_RateHinge = [Hm2,dotdelta2_deg];
 % % end
-% % figure %-------------------------------------------------------------------
-% % subplot(3,2,1)
-% % plot(PL_psi,QL_lpm,'--',PL_psi,QL_lpm_RL,...
-% %     rateSizingPoint_FlowPressure(1),rateSizingPoint_FlowPressure(2),'k*',...
-% %     hingeSizingPoint_FlowPressure(1),hingeSizingPoint_FlowPressure(2),'ko',...
-% %     'MarkerSize',10),grid
-% % title(strcat('Flow-pressure curve,',textCriteria))
-% % legend('No rate limit','Rate limit applied','Valve sizing point',...
-% %     'Cylinder sizing point','Location','southwest')
-% % xlabel('Pressure [psi]')
-% % ylabel('Load-flow [lpm]')
+% % % % figure %-------------------------------------------------------------------
+% % % % plot(PL_psi,A_QL_lpm,'--',PL_psi,A_QL_lpm_RL,...
+% % % %     PL_psi,B_QL_lpm,'--',PL_psi,B_QL_lpm_RL),grid
+% subplot(3,2,1)
+% plot(PL_psi,A_QL_lpm,'--',PL_psi,A_QL_lpm_RL,...
+%     rateSizingPoint_FlowPressure(1),rateSizingPoint_FlowPressure(2),'k*',...
+%     hingeSizingPoint_FlowPressure(1),hingeSizingPoint_FlowPressure(2),'ko',...
+%     'MarkerSize',10),grid
+% title(strcat('Flow-pressure curve,',textCriteria))
+% legend('No rate limit','Rate limit applied','Valve sizing point',...
+%     'Cylinder sizing point','Location','southwest')
+% xlabel('Pressure [psi]')
+% ylabel('Load-flow [lpm]')
 % % 
 % % subplot(3,2,3)
 % % plot((Hm/arm)*1e-3,dotdelta_deg*deg2rad*arm*1e3,'--',(Hm/arm)*1e-3,dotdelta_deg_RL*deg2rad*arm*1e3,...

@@ -10,7 +10,7 @@ sizingCriteriaSingleTandem = 4/5;
 A_sizingCriteria = 4/5; % Max hinge respect stall hinge
 B_sizingCriteria = 2/3; % Max hinge respect stall hinge
 ram2body_pin2pin_stiffness_ratio = 0.9;
-volumeRatio = 1.5; % TotalVolume = VolumeRatio*Area*actuatoStroke
+volumeRatio = 2; % TotalVolume = VolumeRatio*Area*actuatoStroke
 %Hm0 = 1.2724*(70e3/sizingCriteriaSingleTandem); % Equivalent hinge moment to accomplish stiffness req
 % Load and rate requirements ----------------------------------------------
 Hm0 = 0;
@@ -34,10 +34,15 @@ density = 867; % Kg/m^3 at 15 degC
 densityTempRatio = 1.3; % Kg/m^3/degC
 cd = 0.7; % Dimensionless
 viscosity = 1.4e-2; % Pa*s
-internalLeak_lpm = 2; % Leak at supply pressure
+% Cylinder leak
+% This leak absorves the cylinder leak and the friction that provides a
+% realistic valve-cylinder damping ratio. The real cylinder leak should be
+% around 0.3 to 0.5 lpm and the rest comes from providing a realistic
+% damping ratio and it is not a real leak
+internalLeak_lpm = 0.5 + 160; % 150 lpms are not real leakage
 % Valve data
 valveStroke_mm = 1; % mm
-radialClearance_mm = 5e-3; % mm
+radialClearance_mm = 2e-1; % mm
 % Save data ---------------------------------------------------------------
 save('actuationInputDataListDualTandem.mat',...
     'Hm0','Hm1','Hm2','arm','PS_psi',...
